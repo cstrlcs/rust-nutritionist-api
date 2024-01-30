@@ -1,8 +1,10 @@
+mod middlewares;
 mod models;
 mod services;
 
-use axum::{routing::get, serve, Extension, Router};
+use axum::{middleware, routing::get, serve, Extension, Router};
 use dotenv::dotenv;
+use middlewares::auth::auth;
 use models::{categories::Category, items::Item};
 use services::{categories::get_categories, items::get_items};
 use sqlx::postgres::PgPoolOptions;
@@ -30,6 +32,7 @@ async fn main() {
     let app = Router::new()
         .route("/categories", get(get_categories))
         .route("/items", get(get_items))
+        .layer(middleware::from_fn(auth))
         .layer(Extension(pool));
 
     let listener = TcpListener::bind(addr).await.unwrap();

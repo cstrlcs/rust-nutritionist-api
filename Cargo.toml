@@ -1,5 +1,5 @@
 [package]
-name = "nutri-api"
+name = "rust-nutritionist-api"
 version = "0.1.0"
 edition = "2021"
 
